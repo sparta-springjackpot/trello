@@ -29,4 +29,10 @@ public class User extends Timestamped {
 	@Column(nullable = false, unique = true)
 	private String nickname;
 
+	public User(String username, String password, String nickname) {
+		this.username = username;
+		this.password = password;
+		this.nickname = nickname;
+	}
+
 }
