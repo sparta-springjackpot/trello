@@ -64,10 +64,12 @@ public class UserService {
 	public void modifiedProfile(ProfileRequestDto profileRequestDto, User user) {
 		String nickname = profileRequestDto.getNickname();
 		String password = passwordEncoder.encode(profileRequestDto.getPassword());
+		String previousPassword = user.getPassword();
 
 		if (userRepository.findByNickname(nickname).isPresent()) {
 			throw new IllegalArgumentException("동일한 닉네임이 존재합니다.");
-		} else if (user.getPassword().equals(password)) {
+		} else if (passwordEncoder.matches(profileRequestDto.getPassword(), previousPassword)) {
+			log.info("기존 비밀번호와 동일할 경우");
 			throw new IllegalArgumentException("기존 비밀번호와 동일합니다.");
 		}
 
