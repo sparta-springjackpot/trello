@@ -35,7 +35,7 @@ public class ReplyController {
     }
 
     //댓글 수정
-    @PutMapping("/replys/{reply_id")
+    @PutMapping("/replys/{reply_id}")
     public ResponseEntity<RestApiResponseDto> updateComment(
             @PathVariable Long reply_id,
             @RequestBody ReplyRequestDto requestDto,
@@ -45,7 +45,7 @@ public class ReplyController {
         return replyService.updateComment(reply_id, requestDto, userDetails.getUser());
     }
 
-    @DeleteMapping("/replys/{reply_id")
+    @DeleteMapping("/replys/{reply_id}")
     public ResponseEntity<RestApiResponseDto> deleteComment(
             @PathVariable Long reply_id,
             @RequestBody ReplyRequestDto requestDto,

@@ -24,7 +24,7 @@ public class ReplyService {
     private final CardRepository cardRepository;
 
     public ResponseEntity<RestApiResponseDto> getComment(Long cardId) {
-        List<Reply> commentList = replyRepository.findAll(cardId);
+        List<Reply> commentList = replyRepository.findAllByCardId(cardId);
         List<ReplyResponseDto> replyResponseDtoList = commentList.stream()
                 .map(ReplyResponseDto::new)
                 .toList();
