@@ -17,4 +17,10 @@ public class Columns {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "column_id")
     private Long id;
+
+    @Column(name = "column_name", nullable = false)
+    private String columnName;
+
+    @Column(name = "column_number", nullable = false)
+    private Integer columnNumber;
 }
