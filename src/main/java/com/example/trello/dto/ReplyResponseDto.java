@@ -1,7 +1,6 @@
 package com.example.trello.dto;
 
 import com.example.trello.entity.Reply;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 

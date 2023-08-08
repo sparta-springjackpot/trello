@@ -6,6 +6,7 @@ import com.example.trello.dto.RestApiResponseDto;
 import com.example.trello.entity.Board_User;
 import com.example.trello.entity.Card;
 import com.example.trello.entity.Reply;
+import com.example.trello.entity.User;
 import com.example.trello.repository.CardRepository;
 import com.example.trello.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
@@ -28,11 +29,11 @@ public class ReplyService {
         List<ReplyResponseDto> replyResponseDtoList = commentList.stream()
                 .map(ReplyResponseDto::new)
                 .toList();
-        return this.resultResponse(HttpStatus.OK,"게시글 전체 조회",replyResponseDtoList);
+        return this.resultResponse(HttpStatus.OK,"댓글 조회",replyResponseDtoList);
     }
 
     public ResponseEntity<RestApiResponseDto> createComment(
-            Long cardId, ReplyRequestDto requestDto, Board_User user) {
+            Long cardId, ReplyRequestDto requestDto, User user) {
         Card card = cardRepository.findById(cardId).orElseThrow(
                 () -> new IllegalArgumentException("해당 카드가 존재하지않습니다."));
 
@@ -42,7 +43,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public ResponseEntity<RestApiResponseDto> updateComment(Long cardId, ReplyRequestDto requestDto, Board_User user) {
+    public ResponseEntity<RestApiResponseDto> updateComment(Long cardId, ReplyRequestDto requestDto, User user) {
         // 댓글이 있는지
         Reply reply = replyRepository.findById(cardId).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 없습니다."));
@@ -59,7 +60,7 @@ public class ReplyService {
         return this.resultResponse(HttpStatus.OK,"댓글 수정 완료",new ReplyResponseDto(reply));
     }
 
-    public ResponseEntity<RestApiResponseDto> deleteComment(Long cardId, Board_User user) {
+    public ResponseEntity<RestApiResponseDto> deleteComment(Long cardId, User user) {
         // 댓글이 있는지
         Reply reply = replyRepository.findById(cardId).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 없습니다."));

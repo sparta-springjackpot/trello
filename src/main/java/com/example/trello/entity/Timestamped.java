@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class TimeStamp {
+public abstract class Timestamped {
 
     @CreatedDate
     @jakarta.persistence.Column(updatable = false)

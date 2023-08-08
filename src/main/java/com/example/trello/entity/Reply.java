@@ -13,7 +13,7 @@ import org.hibernate.annotations.DynamicInsert;
 @DynamicInsert
 @Entity
 @Table(name = "reply")
-public class Reply extends TimeStamp{
+public class Reply extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reply_id")
@@ -28,9 +28,9 @@ public class Reply extends TimeStamp{
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Board_User user;
+    private User user;
 
-    public Reply(ReplyRequestDto requestDto, Card card, Board_User user) {
+    public Reply(ReplyRequestDto requestDto, Card card, User user) {
         this.id = id;
         this.content = requestDto.getContent();
         this.card = card;

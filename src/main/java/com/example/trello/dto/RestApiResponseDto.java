@@ -6,9 +6,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class RestApiResponseDto {
     private int status;
     private String success;
     private Object result;
+
+    public RestApiResponseDto(int status, String success, Object result) {
+        this.status = status;
+        this.success = success;
+        this.result = result;
+    }
 }

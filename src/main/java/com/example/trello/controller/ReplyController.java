@@ -2,7 +2,7 @@ package com.example.trello.controller;
 
 import com.example.trello.dto.ReplyRequestDto;
 import com.example.trello.dto.RestApiResponseDto;
-import com.example.trello.security.UserDetailslmpl;
+import com.example.trello.security.UserDetailsImpl;
 import com.example.trello.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class ReplyController {
     public ResponseEntity<RestApiResponseDto> createComment(
             @PathVariable Long cardId,
             @RequestBody ReplyRequestDto requestDto,
-            @AuthenticationPrincipal UserDetailslmpl userDetails
+            @AuthenticationPrincipal UserDetailsImpl userDetails
             ){
         this.tokenValidate(userDetails);
 
@@ -39,7 +39,7 @@ public class ReplyController {
     public ResponseEntity<RestApiResponseDto> updateComment(
             @PathVariable Long reply_id,
             @RequestBody ReplyRequestDto requestDto,
-            @AuthenticationPrincipal UserDetailslmpl userDetails
+            @AuthenticationPrincipal UserDetailsImpl userDetails
             ) {
         this.tokenValidate(userDetails);
         return replyService.updateComment(reply_id, requestDto, userDetails.getUser());
@@ -48,14 +48,13 @@ public class ReplyController {
     @DeleteMapping("/replys/{reply_id}")
     public ResponseEntity<RestApiResponseDto> deleteComment(
             @PathVariable Long reply_id,
-            @RequestBody ReplyRequestDto requestDto,
-            @AuthenticationPrincipal UserDetailslmpl userDetails
+            @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         this.tokenValidate(userDetails);
-        return replyService.deleteComment(reply_id, requestDto, userDetails.getUser());
+        return replyService.deleteComment(reply_id, userDetails.getUser());
     }
 
-    public void tokenValidate(UserDetailslmpl userDetails) {
+    public void tokenValidate(UserDetailsImpl userDetails) {
         try{
             userDetails.getUser();
         } catch (Exception e) {
