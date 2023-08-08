@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ColumnResponseDto {
-    private Long id;
+    private int column_id;
     private String columnName;
     private Integer columnNumber;
 }
