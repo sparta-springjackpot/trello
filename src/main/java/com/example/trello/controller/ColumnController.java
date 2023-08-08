@@ -29,9 +29,9 @@ public class ColumnController {
     }
 
     @DeleteMapping("/{columnId}")
-    public ResponseEntity<String> deleteColumn(@PathVariable Long columnId) {
+    public ResponseEntity<Void> deleteColumn(@PathVariable Long columnId) {
         columnsService.deleteColumn(columnId);
-        return ResponseEntity.ok("Delete column succeeded");
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{columnId}/move/{newColumnNumber}")
