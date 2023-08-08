@@ -4,7 +4,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.trello.dto.ProfileRequestDto;
-import com.example.trello.dto.ProfileResponseDto;
 import com.example.trello.dto.SigninRequestDto;
 import com.example.trello.dto.SignupRequestDto;
 import com.example.trello.entity.User;
@@ -78,6 +77,16 @@ public class UserService {
 		log.info("회원 정보 수정 시도");
 		userRepository.save(user);
 		log.info("회원 정보 수정 완료");
+	}
+
+	public void checkPassword(ProfileRequestDto requestDto, User user) {
+		String password = user.getPassword();
+		String passwordConfirm = requestDto.getPasswordConfirm();
+
+		if (!passwordEncoder.matches(passwordConfirm, password)) {
+			log.info("비밀번호 대조 실패");
+			throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+		}
 	}
 
 }
