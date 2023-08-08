@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.example.trello.jwt.JwtAuthorizationFilter;
 import com.example.trello.jwt.JwtUtil;
 import com.example.trello.security.UserDetailsServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,7 @@ public class WebSecurityConfig {
 	private final JwtUtil jwtUtil;
 	private final UserDetailsServiceImpl userDetailsService;
 
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -32,7 +34,7 @@ public class WebSecurityConfig {
 	@Bean
 	public JwtAuthorizationFilter jwtAuthorizationFilter() {
 		return new JwtAuthorizationFilter(jwtUtil, userDetailsService);
-}
+	}
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -58,3 +60,4 @@ public class WebSecurityConfig {
 		return httpSecurity.build();
 	}
 }
+

@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import com.example.trello.dto.SigninRequestDto;
 import com.example.trello.dto.SignupRequestDto;
 import com.example.trello.entity.User;
+import com.example.trello.jwt.JwtUtil;
 import com.example.trello.repository.UserRepository;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +20,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final JwtUtil jwtUtil;
 
 	public void signup(SignupRequestDto signupRequestDto) {
 		String username = signupRequestDto.getUsername();
@@ -40,7 +43,7 @@ public class UserService {
 			userRepository.save(user);
 	}
 
-	public void signin(SigninRequestDto signinRequestDto) {
+	public void signin(SigninRequestDto signinRequestDto, HttpServletResponse response) {
 		String username = signinRequestDto.getUsername();
 		String password = signinRequestDto.getPassword();
 
@@ -52,6 +55,8 @@ public class UserService {
 			throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
 		}
 
+		response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(signinRequestDto.getUsername()));
+		jwtUtil.addJwtToCookie(response.getHeader(JwtUtil.AUTHORIZATION_HEADER), response);
 	}
 
 }
