@@ -39,4 +39,26 @@ public class ColumnsService {
     public void deleteColumn(Long columnId) {
         columnsRepository.deleteById(columnId);
     }
+
+    public void moveColumnOrder(Long columnId, int newColumnNumber) {
+        Columns column = columnsRepository.findById(columnId)
+                .orElseThrow(() -> new IllegalArgumentException("Column not found"));
+
+        int oldColumnNumber = column.getColumnNumber();
+
+        if (oldColumnNumber != newColumnNumber) {
+            List<Columns> allColumns = columnsRepository.findAll();
+
+            for (Columns c : allColumns) {
+                if (c.getColumnNumber() == newColumnNumber) {
+                    c.setColumnNumber(oldColumnNumber);
+                    columnsRepository.save(c);
+                    break;
+                }
+            }
+
+            column.setColumnNumber(newColumnNumber);
+            columnsRepository.save(column);
+        }
+    }
 }

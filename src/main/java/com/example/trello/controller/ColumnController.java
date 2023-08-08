@@ -33,4 +33,12 @@ public class ColumnController {
         columnsService.deleteColumn(columnId);
         return ResponseEntity.ok("Delete column succeeded");
     }
+
+    @PutMapping("/{columnId}/move/{newColumnNumber}")
+    public ResponseEntity<String> moveColumnOrder(
+            @PathVariable Long columnId,
+            @PathVariable int newColumnNumber) {
+        columnsService.moveColumnOrder(columnId, newColumnNumber);
+        return ResponseEntity.ok("Move column order succeeded");
+    }
 }
