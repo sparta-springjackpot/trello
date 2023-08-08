@@ -36,4 +36,8 @@ public class Reply extends TimeStamp{
         this.card = card;
         this.user = user;
     }
+
+    public void update(ReplyRequestDto requestDto) {
+        this.content = requestDto.getContent();
+    }
 }

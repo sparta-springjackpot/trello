@@ -7,16 +7,16 @@ import com.example.trello.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class ReplyController {
     private final ReplyService replyService;
 
     @GetMapping("/cards/{cardId}/replys")
+    @ResponseBody
     public ResponseEntity<RestApiResponseDto> getComment(@PathVariable Long cardId){
         return replyService.getComment(cardId);
     }
@@ -25,11 +25,12 @@ public class ReplyController {
     @PostMapping("/cards/{cardId}/replys")
     public ResponseEntity<RestApiResponseDto> createComment(
             @PathVariable Long cardId,
-            @ResponseBody ReplyRequestDto requestDto,
+            @RequestBody ReplyRequestDto requestDto,
             @AuthenticationPrincipal UserDetailslmpl userDetails
             ){
         this.tokenValidate(userDetails);
 
+//        return replyService.createComment(cardId, requestDto, userDetails.getUser());
         return replyService.createComment(cardId, requestDto, userDetails.getUser());
     }
 
