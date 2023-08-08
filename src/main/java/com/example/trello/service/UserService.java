@@ -3,6 +3,8 @@ package com.example.trello.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.trello.dto.ProfileRequestDto;
+import com.example.trello.dto.ProfileResponseDto;
 import com.example.trello.dto.SigninRequestDto;
 import com.example.trello.dto.SignupRequestDto;
 import com.example.trello.entity.User;
@@ -57,6 +59,23 @@ public class UserService {
 
 		response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(signinRequestDto.getUsername()));
 		jwtUtil.addJwtToCookie(response.getHeader(JwtUtil.AUTHORIZATION_HEADER), response);
+	}
+
+	public void modifiedProfile(ProfileRequestDto profileRequestDto, User user) {
+		String nickname = profileRequestDto.getNickname();
+		String password = passwordEncoder.encode(profileRequestDto.getPassword());
+
+		if (userRepository.findByNickname(nickname).isPresent()) {
+			throw new IllegalArgumentException("동일한 닉네임이 존재합니다.");
+		} else if (user.getPassword().equals(password)) {
+			throw new IllegalArgumentException("기존 비밀번호와 동일합니다.");
+		}
+
+		user.setNickname(nickname);
+		user.setPassword(password);
+		log.info("회원 정보 수정 시도");
+		userRepository.save(user);
+		log.info("회원 정보 수정 완료");
 	}
 
 }

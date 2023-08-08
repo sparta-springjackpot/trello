@@ -2,14 +2,17 @@ package com.example.trello.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.trello.dto.ApiResponseDto;
+import com.example.trello.dto.ProfileRequestDto;
 import com.example.trello.dto.SigninRequestDto;
 import com.example.trello.dto.SignupRequestDto;
+import com.example.trello.security.UserDetailsImpl;
 import com.example.trello.service.UserService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,6 +45,18 @@ public class UserController {
 			return ResponseEntity.ok().body(new ApiResponseDto("로그인에 실패했습니다.", HttpStatus.BAD_REQUEST.value()));
 		}
 		return ResponseEntity.ok().body(new ApiResponseDto("로그인에 성공했습니다.", HttpStatus.CREATED.value()));
+	}
+
+	@PostMapping("/profile")
+	public ResponseEntity<ApiResponseDto> modifiedProfile
+		(@RequestBody ProfileRequestDto profileRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+		try {
+			userService.modifiedProfile(profileRequestDto, userDetails.getUser());
+
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.ok().body(new ApiResponseDto("정보 수정에 실패했습니다.", HttpStatus.BAD_REQUEST.value()));
+		}
+		return ResponseEntity.ok().body(new ApiResponseDto("정보 수정에 성공했습니다.", HttpStatus.CREATED.value()));
 	}
 
 }
