@@ -15,12 +15,14 @@ public class ColumnController {
 
     private final ColumnsService columnsService;
 
+    // 컬럼 생성 API
     @PostMapping
     public ResponseEntity<String> createColumn(@RequestBody ColumnRequestDto requestDto) {
         Long columnId = columnsService.createColumn(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Column creation successful");
     }
 
+    // 컬럼 수정 API
     @PutMapping("/{columnId}")
     public ResponseEntity<ColumnResponseDto> editColumn(@PathVariable Long columnId,
                                                         @RequestBody ColumnRequestDto requestDto) {
@@ -28,12 +30,14 @@ public class ColumnController {
         return ResponseEntity.ok(responseDto);
     }
 
+    // 컬럼 삭제 API
     @DeleteMapping("/{columnId}")
     public ResponseEntity<Void> deleteColumn(@PathVariable Long columnId) {
         columnsService.deleteColumn(columnId);
         return ResponseEntity.noContent().build();
     }
 
+    // 컬럼 순서 이동 API
     @PutMapping("/{columnId}/move/{newColumnNumber}")
     public ResponseEntity<String> moveColumnOrder(
             @PathVariable Long columnId,
