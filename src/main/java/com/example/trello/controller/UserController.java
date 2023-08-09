@@ -2,7 +2,7 @@ package com.example.trello.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.trello.dto.ApiResponseDto;
-import com.example.trello.dto.ProfileRequestDto;
 import com.example.trello.dto.SigninRequestDto;
 import com.example.trello.dto.SignupRequestDto;
-import com.example.trello.security.UserDetailsImpl;
 import com.example.trello.service.UserService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,6 +23,11 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
+
+	@GetMapping("/user/login")
+	public String loginPage() {
+		return "login";
+	}
 
 	@PostMapping("/user/signup")
 	public ResponseEntity<ApiResponseDto> signup(@RequestBody SignupRequestDto signupRequestDto) {
