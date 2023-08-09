@@ -15,43 +15,46 @@ import org.springframework.web.bind.annotation.*;
 public class ReplyController {
     private final ReplyService replyService;
 
-    @GetMapping("/cards/{cardId}/replys")
+    @GetMapping("/cards/{cardid}/replys")
     @ResponseBody
-    public ResponseEntity<RestApiResponseDto> getComment(@PathVariable Long cardId){
-        return replyService.getComment(cardId);
+    public ResponseEntity<RestApiResponseDto> getComment(@PathVariable Long cardid){
+        return replyService.getComment(cardid);
     }
 
     //댓글작성
-    @PostMapping("/cards/{cardId}/replys")
+    @PostMapping("/cards/{cardid}/replys")
     public ResponseEntity<RestApiResponseDto> createComment(
-            @PathVariable Long cardId,
+            @PathVariable Long cardid,
             @RequestBody ReplyRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ){
         this.tokenValidate(userDetails);
 
 //        return replyService.createComment(cardId, requestDto, userDetails.getUser());
-        return replyService.createComment(cardId, requestDto, userDetails.getUser());
+        return replyService.createComment(cardid, requestDto, userDetails.getUser());
     }
 
-    //댓글 수정
-    @PutMapping("/replys/{reply_id}")
+    // 댓글 수정
+    @PutMapping("/cards/{cardid}/replys/{replyid}")
     public ResponseEntity<RestApiResponseDto> updateComment(
-            @PathVariable Long reply_id,
+            @PathVariable Long cardid,
+            @PathVariable Long replyid,
             @RequestBody ReplyRequestDto requestDto,
-            @AuthenticationPrincipal UserDetailsImpl userDetails
-            ) {
-        this.tokenValidate(userDetails);
-        return replyService.updateComment(reply_id, requestDto, userDetails.getUser());
-    }
-
-    @DeleteMapping("/replys/{reply_id}")
-    public ResponseEntity<RestApiResponseDto> deleteComment(
-            @PathVariable Long reply_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         this.tokenValidate(userDetails);
-        return replyService.deleteComment(reply_id, userDetails.getUser());
+        return replyService.updateComment(cardid, replyid, requestDto, userDetails.getUser());
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/cards/{cardid}/replys/{replyid}")
+    public ResponseEntity<RestApiResponseDto> deleteComment(
+            @PathVariable Long cardid,
+            @PathVariable Long replyid,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        this.tokenValidate(userDetails);
+        return replyService.deleteComment(cardid, replyid, userDetails.getUser());
     }
 
     public void tokenValidate(UserDetailsImpl userDetails) {

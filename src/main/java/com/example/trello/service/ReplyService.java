@@ -39,16 +39,21 @@ public class ReplyService {
 
         Reply reply = new Reply(requestDto, card, user);
         replyRepository.save(reply);
-        return this.resultResponse(HttpStatus.CREATED, "댓글 작성 완료", new ReplyResponseDto(reply));
+        return this.resultResponse(HttpStatus.CREATED, " 댓글 작성 완료", new ReplyResponseDto(reply));
     }
 
     @Transactional
-    public ResponseEntity<RestApiResponseDto> updateComment(Long cardId, ReplyRequestDto requestDto, User user) {
+    public ResponseEntity<RestApiResponseDto> updateComment(Long cardId,Long replyId, ReplyRequestDto requestDto, User user) {
         // 댓글이 있는지
-        Reply reply = replyRepository.findById(cardId).orElseThrow(() ->
+        Reply reply = replyRepository.findById(replyId).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 없습니다."));
 
-        // 댓글 작성자 혹은 관리자인지
+        // 댓글이 해당 카드에 속해 있는지 확인 (cardId로 검증)
+        if (!reply.getCard().getId().equals(cardId)) {
+            throw new IllegalArgumentException("해당 댓글은 지정된 카드에 속해있지 않습니다.");
+        }
+
+        // 댓글 작성자인지
         Long writerId = reply.getUser().getId();
         Long loginId = user.getId();
         if(!writerId.equals(loginId)){
@@ -60,12 +65,17 @@ public class ReplyService {
         return this.resultResponse(HttpStatus.OK,"댓글 수정 완료",new ReplyResponseDto(reply));
     }
 
-    public ResponseEntity<RestApiResponseDto> deleteComment(Long cardId, User user) {
+    public ResponseEntity<RestApiResponseDto> deleteComment(Long cardId,Long replyId, User user) {
         // 댓글이 있는지
-        Reply reply = replyRepository.findById(cardId).orElseThrow(() ->
+        Reply reply = replyRepository.findById(replyId).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 없습니다."));
 
-        // 댓글 작성자 혹은 관리자인지
+        // 댓글이 해당 카드에 속해 있는지 확인 (cardId로 검증)
+        if (!reply.getCard().getId().equals(cardId)) {
+            throw new IllegalArgumentException("해당 댓글은 지정된 카드에 속해있지 않습니다.");
+        }
+
+        // 댓글 작성자인지
         Long writerId = reply.getUser().getId();
         Long loginId = user.getId();
 
