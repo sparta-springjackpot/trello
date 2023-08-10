@@ -37,8 +37,8 @@ public class Card {
     @Column(nullable = false)
     private String cardDescription;
 
-    @Column(nullable = false)
-    private String cardColor;
+//    @Column(nullable = false)
+//    private String cardColor;
 
     @Column(nullable = false)
     private Long cardNumber;
