@@ -2,13 +2,9 @@ package com.example.trello.entity;
 
 import com.example.trello.dto.CardRequestDto;
 import jakarta.persistence.*;
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Setter
 @Getter
@@ -37,7 +33,7 @@ public class Card {
     @Column(nullable = false)
     private String cardDescription;
 
-    @Column(nullable = false)
+    @Column
     private String cardColor;
 
     @Column(nullable = false)

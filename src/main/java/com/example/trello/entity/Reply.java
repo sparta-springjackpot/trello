@@ -23,6 +23,10 @@ public class Reply extends Timestamped {
     private String content;
 
     @ManyToOne
+    @JoinColumn(name = "column_id")
+    private Columns columns;
+
+    @ManyToOne
     @JoinColumn(name = "card_id")
     private Card card;
 
@@ -30,9 +34,10 @@ public class Reply extends Timestamped {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Reply(ReplyRequestDto requestDto, Card card, User user) {
+    public Reply(ReplyRequestDto requestDto, Columns columns, Card card, User user) {
         this.id = id;
         this.content = requestDto.getContent();
+        this.columns = columns;
         this.card = card;
         this.user = user;
     }

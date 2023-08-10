@@ -1,6 +1,5 @@
 package com.example.trello.repository;
 
-import com.example.trello.entity.Board_User;
 import com.example.trello.entity.Reply;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -2,11 +2,11 @@ package com.example.trello.dto;
 
 import lombok.Data;
 
-@Data
 import java.util.List;
 
+@Data
 public class ColumnResponseDto {
-    private int column_id;
+    private Long column_id;
     private String columnName;
     private Integer columnNumber;
 

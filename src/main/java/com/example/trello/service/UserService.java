@@ -32,15 +32,19 @@ public class UserService {
         if (userRepository.findByUsername(username).isPresent()) {
             log.info("동일한 ID");
             throw new IllegalArgumentException("이미 존재하는 ID 입니다.");
-        } else if (userRepository.findByNickname(nickname).isPresent()) {
+        }
+        if (userRepository.findByNickname(nickname).isPresent()) {
             log.info("동일한 닉네임");
             throw new IllegalArgumentException("이미 존재하는 닉네임 입니다.");
-        } else if (!signupRequestDto.getPassword().equals(passwordConfirm)) {
+        }
+        if (!signupRequestDto.getPassword().equals(passwordConfirm)) {
             log.info("비밀번호 불일치");
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        User user= new User(username, password, nickname);
+        String hashedPassword = passwordEncoder.encode(signupRequestDto.getPasswordConfirm());
+
+        User user= new User(username, password, hashedPassword, nickname);
         userRepository.save(user);
     }
 
@@ -64,16 +68,21 @@ public class UserService {
         String nickname = profileRequestDto.getNickname();
         String password = passwordEncoder.encode(profileRequestDto.getPassword());
         String previousPassword = user.getPassword();
+        String previousPassword2 = user.getPasswordConfirm();
 
         if (userRepository.findByNickname(nickname).isPresent()) {
             throw new IllegalArgumentException("동일한 닉네임이 존재합니다.");
-        } else if (passwordEncoder.matches(profileRequestDto.getPassword(), previousPassword)) {
+        }
+        if (passwordEncoder.matches(profileRequestDto.getPassword(), previousPassword) ||
+            passwordEncoder.matches(profileRequestDto.getPassword(), previousPassword2)
+        ) {
             log.info("기존 비밀번호와 동일할 경우");
-            throw new IllegalArgumentException("기존 비밀번호와 동일합니다.");
+            throw new IllegalArgumentException("기존 비밀번호 혹은 전 비밀번호와 동일합니다.");
         }
 
         user.setNickname(nickname);
         user.setPassword(password);
+        user.setPasswordConfirm(previousPassword);
         log.info("회원 정보 수정 시도");
         userRepository.save(user);
         log.info("회원 정보 수정 완료");

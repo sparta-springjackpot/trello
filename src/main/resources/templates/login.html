@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="#">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="/css/loginStyles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <title>로그인 / 회원가입 페이지</title>
+</head>
+
+<body>
+<div class="container left-panel-active">
+    <!-- Sign Up -->
+    <div class="container__form container--signup">
+        <div class="form" id="form1">
+            <h2 class="form__title">Sign Up</h2>
+            <input type="text" placeholder="아이디" name="username" id="username" class="input"/>
+            <input type="text" placeholder="닉네임" name="nickname" id="nickname" class="input"/>
+            <input type="password" placeholder="비밀번호" name="password" id="password" class="input"/>
+            <input type="password" placeholder="비밀번호 확인" name="passwordConfirmation" id="password-check" class="input"/>
+            <button class="btn" onclick="signup()">Sign Up</button>
+        </div>
+    </div>
+
+    <!-- Log In -->
+    <div class="container__form container--signin">
+        <div class="form" id="form2">
+            <h2 class="form__title">Log In</h2>
+            <input type="text" placeholder="아이디" name="loginUsername" id="loginUsername" class="input"/>
+            <input type="password" placeholder="비밀번호" name="loginPassword" id="loginPassword" class="input"/>
+            <button class="btn" onclick="onLogin()">Log In</button>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="container__overlay">
+        <div class="overlay">
+            <div class="overlay__panel overlay--left">
+                <button class="btn" id="signIn">Log In</button>
+            </div>
+            <div class="overlay__panel overlay--right">
+                <button class="btn" id="signUp">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="application/javascript" src="/js/login.js"></script>
+</html>

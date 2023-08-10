@@ -3,11 +3,12 @@ package com.example.trello.service;
 import com.example.trello.dto.ReplyRequestDto;
 import com.example.trello.dto.ReplyResponseDto;
 import com.example.trello.dto.RestApiResponseDto;
-import com.example.trello.entity.Board_User;
 import com.example.trello.entity.Card;
+import com.example.trello.entity.Columns;
 import com.example.trello.entity.Reply;
 import com.example.trello.entity.User;
 import com.example.trello.repository.CardRepository;
+import com.example.trello.repository.ColumnsRepository;
 import com.example.trello.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,19 @@ public class ReplyService {
 
     private final ReplyRepository replyRepository;
     private final CardRepository cardRepository;
+    private final ColumnsRepository columnsRepository;
 
-    public ResponseEntity<RestApiResponseDto> getComment(Long cardId) {
+    public ResponseEntity<RestApiResponseDto> getComment(Long columnid, Long cardId) {
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 카드가 존재하지 않습니다."));
+
+        Columns column = columnsRepository.findById(columnid)
+                .orElseThrow(() -> new IllegalArgumentException("해당 컬럼이 존재하지 않습니다."));
+
+        if (!card.getColumns().getId().equals(columnid) || !card.getColumns().getId().equals(column.getId())) {
+            throw new IllegalArgumentException("해당 카드는 지정된 컬럼에 속해 있지 않습니다.");
+        }
+
         List<Reply> commentList = replyRepository.findAllByCardId(cardId);
         List<ReplyResponseDto> replyResponseDtoList = commentList.stream()
                 .map(ReplyResponseDto::new)
@@ -32,21 +44,28 @@ public class ReplyService {
         return this.resultResponse(HttpStatus.OK,"댓글 조회",replyResponseDtoList);
     }
 
-    public ResponseEntity<RestApiResponseDto> createComment(
+    public ResponseEntity<RestApiResponseDto> createComment(Long columnid,
             Long cardId, ReplyRequestDto requestDto, User user) {
         Card card = cardRepository.findById(cardId).orElseThrow(
                 () -> new IllegalArgumentException("해당 카드가 존재하지않습니다."));
 
-        Reply reply = new Reply(requestDto, card, user);
+        Columns columns = columnsRepository.findById(columnid).orElseThrow(
+                () -> new IllegalArgumentException("해당 컬럼이 존재하지않습니다."));
+
+        Reply reply = new Reply(requestDto, columns, card, user);
         replyRepository.save(reply);
         return this.resultResponse(HttpStatus.CREATED, " 댓글 작성 완료", new ReplyResponseDto(reply));
     }
 
     @Transactional
-    public ResponseEntity<RestApiResponseDto> updateComment(Long cardId,Long replyId, ReplyRequestDto requestDto, User user) {
+    public ResponseEntity<RestApiResponseDto> updateComment(Long columnid, Long cardId,Long replyId, ReplyRequestDto requestDto, User user) {
         // 댓글이 있는지
         Reply reply = replyRepository.findById(replyId).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 없습니다."));
+
+        if (!reply.getCard().getId().equals(columnid)) {
+            throw new IllegalArgumentException("해당 댓글은 지정된 컬럼에 속해있지 않습니다.");
+        }
 
         // 댓글이 해당 카드에 속해 있는지 확인 (cardId로 검증)
         if (!reply.getCard().getId().equals(cardId)) {
@@ -65,10 +84,14 @@ public class ReplyService {
         return this.resultResponse(HttpStatus.OK,"댓글 수정 완료",new ReplyResponseDto(reply));
     }
 
-    public ResponseEntity<RestApiResponseDto> deleteComment(Long cardId,Long replyId, User user) {
+    public ResponseEntity<RestApiResponseDto> deleteComment(Long columnid, Long cardId,Long replyId, User user) {
         // 댓글이 있는지
         Reply reply = replyRepository.findById(replyId).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 없습니다."));
+
+        if (!reply.getCard().getId().equals(columnid)) {
+            throw new IllegalArgumentException("해당 댓글은 지정된 컬럼에 속해있지 않습니다.");
+        }
 
         // 댓글이 해당 카드에 속해 있는지 확인 (cardId로 검증)
         if (!reply.getCard().getId().equals(cardId)) {
