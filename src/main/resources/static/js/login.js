@@ -31,6 +31,7 @@ function signup() {
     let username = $('#username').val();
     let password = $('#password').val();
     let passwordConfirm = $('#passwordConfirm').val();
+    let passwordConfirmation = $('#password-check').val();
     let nickname = $('#nickname').val();
 
     if (username == "") {
@@ -53,6 +54,7 @@ function signup() {
         return false;
     }
 
+
     if (passwordConfirm == "") {
         Swal.fire({
             icon: 'warning',
@@ -60,6 +62,14 @@ function signup() {
             text: '비밀번호 확인란이 공백입니다. 문자를 입력해주세요.',
         });
         $('#passwordConfirm').focus();
+      
+    if (passwordConfirmation == "") {
+        Swal.fire({
+            icon: 'warning',
+            title: '이메일 입력오류',
+            text: '비밀번호 확인란이 공백입니다. 문자를 입력해주세요.',
+        });
+        $('#password-check').focus();
         return false;
     }
 
@@ -111,6 +121,12 @@ function signup() {
                     text: '이미 존재하는 ID 이거나 nickname 입니다.'
                 });
             }
+            Toast.fire({
+                icon: 'success',
+                title: '회원가입에 성공하셨습니다.'
+            }).then(function () {
+                window.location.reload();
+            })
         })
         .fail(function (jqXHR, textStatus, error) {
             console.log(error);
@@ -122,6 +138,12 @@ function signup() {
 }
 
     function onLogin() {
+                title: '회원가입에 실패하였습니다.'
+            })
+        });
+}
+
+function onLogin() {
     let loginUsername = $('#loginUsername').val();
     let loginPassword = $('#loginPassword').val();
 
