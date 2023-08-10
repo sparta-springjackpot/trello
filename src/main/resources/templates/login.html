@@ -29,10 +29,7 @@
             <input type="text" placeholder="닉네임" name="nickname" id="nickname" class="input"/>
             <input type="password" placeholder="비밀번호" name="password" id="password" class="input"/>
             <input type="password" placeholder="비밀번호 확인" name="passwordConfirm" id="passwordConfirm" class="input"/>
-            <div class ="btn-box">
-                <button class="btn" onclick="signup()">Sign Up</button>
-                <a href="#"> <img src="/image/kakao_login.png" height="46px" id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=3178a52494a9989ff5a23e55888f284f&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code'"> </a>
-            </div>
+            <button class="btn" onclick="signup()">Sign Up</button>
         </div>
     </div>
 
@@ -42,7 +39,10 @@
             <h2 class="form__title">Log In</h2>
             <input type="text" placeholder="아이디" name="loginUsername" id="loginUsername" class="input"/>
             <input type="password" placeholder="비밀번호" name="loginPassword" id="loginPassword" class="input"/>
-            <button class="btn" onclick="onLogin()">Log In</button>
+            <div class ="btn-box">
+                <button class="btn" onclick="onLogin()">Log In</button>
+                <a href="#"> <img src="/image/kakao_login.png" height="43px" id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=3178a52494a9989ff5a23e55888f284f&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code'"> </a>
+            </div>
         </div>
     </div>
 

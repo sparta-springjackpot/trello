@@ -13,7 +13,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.example.trello.config.RestTemplateConfig;
 import com.example.trello.dto.KakaoUserInfoDto;
 import com.example.trello.entity.User;
 import com.example.trello.jwt.JwtUtil;
@@ -26,8 +25,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j(topic = "KAKAO Login")
-@Service
 @RequiredArgsConstructor
+@Service
 public class KakaoService {
 
 	private final PasswordEncoder passwordEncoder;
