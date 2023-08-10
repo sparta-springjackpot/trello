@@ -3,9 +3,10 @@ package com.example.trello.dto;
 import lombok.Getter;
 
 @Getter
-public class SigninRequestDto {
+public class ProfileRequestDto {
 
-	private String username;
+	private String nickname;
 	private String password;
+	private String passwordConfirm;
 
 }
