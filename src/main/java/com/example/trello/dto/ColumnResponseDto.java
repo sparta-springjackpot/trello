@@ -1,5 +1,6 @@
 package com.example.trello.dto;
 
+import java.util.List;
 import lombok.Data;
 
 import java.util.List;

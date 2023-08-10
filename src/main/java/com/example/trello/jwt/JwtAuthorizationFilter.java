@@ -27,56 +27,57 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;
-    private final UserDetailsServiceImpl userDetailsService;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws
-            ServletException,
-            IOException {
+	private final JwtUtil jwtUtil;
+	private final UserDetailsServiceImpl userDetailsService;
 
-        String tokenValue = jwtUtil.getTokenFromRequest(req);
+	@Override
+	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws
+		ServletException,
+		IOException {
 
-        if (StringUtils.hasText(tokenValue)) {
-            // JWT 토큰 substring
-            tokenValue = jwtUtil.substringToken(tokenValue);
-            log.info(tokenValue);
+		String tokenValue = jwtUtil.getTokenFromRequest(req);
 
-            if (!jwtUtil.validateToken(tokenValue)) {
-                log.error("Token Error");
-                return;
-            }
+		if (StringUtils.hasText(tokenValue)) {
+			// JWT 토큰 substring
+			tokenValue = jwtUtil.substringToken(tokenValue);
+			log.info(tokenValue);
 
-            Claims info = jwtUtil.paraseClaims(tokenValue);
+			if (!jwtUtil.validateToken(tokenValue)) {
+				log.error("Token Error");
+				return;
+			}
 
-            try {
-                setAuthentication(info.getSubject());
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                return;
-            }
-        }
+			Claims info = jwtUtil.paraseClaims(tokenValue);
 
-        filterChain.doFilter(req, res);
-    }
+			try {
+				setAuthentication(info.getSubject());
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				return;
+			}
+		}
 
-    // 인증 처리
-    public void setAuthentication(String userId) {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        Authentication authentication = createAuthentication(userId);
-        // username > user 조회 > userDetails 에 담고 > authentication 의 principal 에 담고
-        // > securityContent 에 담고 > SecurityContextHolder 에 담고
-        // > 이제 @AuthenticationPrincipal 로 조회할 수 있음
-        context.setAuthentication(authentication);
+		filterChain.doFilter(req, res);
+	}
 
-        SecurityContextHolder.setContext(context);
-    }
+	// 인증 처리
+	public void setAuthentication(String userId) {
+		SecurityContext context = SecurityContextHolder.createEmptyContext();
+		Authentication authentication = createAuthentication(userId);
+		// username > user 조회 > userDetails 에 담고 > authentication 의 principal 에 담고
+		// > securityContent 에 담고 > SecurityContextHolder 에 담고
+		// > 이제 @AuthenticationPrincipal 로 조회할 수 있음
+		context.setAuthentication(authentication);
 
-    // 인증 객체 생성
-    private Authentication createAuthentication(String userId) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
-        // Returns the authorities granted to the user. Cannot return null.
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-    }
+		SecurityContextHolder.setContext(context);
+	}
+
+	// 인증 객체 생성
+	private Authentication createAuthentication(String userId) {
+		UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+		// Returns the authorities granted to the user. Cannot return null.
+		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+	}
 
 }
