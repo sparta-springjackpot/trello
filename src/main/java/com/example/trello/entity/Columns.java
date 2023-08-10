@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -18,7 +21,6 @@ public class Columns {
     @Column(name = "column_id")
     private Long id;
 
-
-//    @OneToMany(mappedBy = "columns", cascade = CascadeType.REMOVE)
-//    private List<Card> cards;
+    @OneToMany(mappedBy = "columns",cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Card> cardList = new ArrayList<>();
 }
