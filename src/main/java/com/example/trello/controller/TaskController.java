@@ -1,34 +1,38 @@
 package com.example.trello.controller;
 
-import com.example.trello.entity.Task;
-import com.example.trello.repository.TaskRepository;
+import com.example.trello.dto.RestApiResponseDto;
+import com.example.trello.dto.TaskRequestDto;
+import com.example.trello.service.TaskService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-
-@Controller
+@RequestMapping("/api")
+@RestController
 public class TaskController {
 
     @Autowired
-    private TaskRepository taskRepository;
+    private TaskService taskService;
 
-    @GetMapping("/api/cards/{id}/dates")
-    @ResponseBody
-    public Task getTask(@PathVariable Long id) {
-        return taskRepository.findById(id).orElse(null);
+    @GetMapping("/cards/{cardId}/dates")
+    public ResponseEntity<RestApiResponseDto> getTask(@PathVariable Long cardId){
+        return taskService.getTask(cardId);
     }
 
-    @PostMapping("/card/{id}/update-dates")
-    @ResponseBody
-    public Task updateCardDates(@PathVariable Long id, @RequestParam("startDate") LocalDate startDate, @RequestParam("endDate") LocalDate endDate) {
-        Task task = taskRepository.findById(id).orElse(null);
-        if (task != null) {
-            task.setStartDate(startDate);
-            task.setEndDate(endDate);
-            taskRepository.save(task);
-        }
-        return taskRepository.findById(id).orElse(null);
+    @Transactional
+    @PostMapping("/cards/{cardId}/dates")
+    public ResponseEntity<RestApiResponseDto> createCardDates(@PathVariable Long cardId, @RequestBody TaskRequestDto requestDto){
+        return taskService.createCardDates(cardId, requestDto);
+    }
+
+    @PutMapping("/cards/dates/{dateId}")
+    public ResponseEntity<RestApiResponseDto> updateCardDates(@PathVariable Long dateId, @RequestBody TaskRequestDto requestDto) {
+        return taskService.updateCardDates(dateId, requestDto);
+    }
+
+    @DeleteMapping("/cards/dates/{dateId}")
+    public ResponseEntity<RestApiResponseDto> deleteCardDates(@PathVariable Long dateId) {
+        return taskService.deleteCardDates(dateId);
     }
 }

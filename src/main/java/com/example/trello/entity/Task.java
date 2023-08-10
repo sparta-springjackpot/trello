@@ -1,14 +1,12 @@
 package com.example.trello.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.trello.dto.TaskRequestDto;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,7 +18,18 @@ public class Task {
     private Long id;
 
     private String title;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    @jakarta.persistence.Column(updatable = false)
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private boolean expired;
+
+    @ManyToOne
+    @JoinColumn(name = "card_id")
+    private Card card;
+
+    public Task(TaskRequestDto requestDto, Card card) {
+        this.title = requestDto.getTitle();
+        this.endDate = requestDto.getEndDate();
+        this.card = card;
+    }
 }

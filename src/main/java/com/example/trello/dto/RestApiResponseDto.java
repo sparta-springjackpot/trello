@@ -1,12 +1,12 @@
 package com.example.trello.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class RestApiResponseDto {
+
     private int status;
     private String success;
     private Object result;
@@ -15,5 +15,10 @@ public class RestApiResponseDto {
         this.status = status;
         this.success = success;
         this.result = result;
+    }
+
+    public RestApiResponseDto(int status, String success) {
+        this.status = status;
+        this.success = success;
     }
 }

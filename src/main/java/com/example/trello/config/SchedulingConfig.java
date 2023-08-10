@@ -13,7 +13,7 @@ public class SchedulingConfig {
     @Autowired
     private TaskService taskService;
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0/1 * * * *")
     public void processExpiredTasks() {
         taskService.processExpiredTasks();
     }
