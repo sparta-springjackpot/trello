@@ -17,4 +17,8 @@ public class Columns {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "column_id")
     private Long id;
+
+
+//    @OneToMany(mappedBy = "columns", cascade = CascadeType.REMOVE)
+//    private List<Card> cards;
 }
