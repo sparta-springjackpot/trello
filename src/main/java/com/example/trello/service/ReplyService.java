@@ -108,7 +108,7 @@ public class ReplyService {
 
         // 댓글 삭제
         replyRepository.delete(reply);
-        return this.resultResponse(HttpStatus.OK,"댓글 삭제 완료",null);
+        return this.resultResponse(HttpStatus.OK,"댓글 삭제 완료",new ReplyResponseDto(reply));
     }
 
     private ResponseEntity<RestApiResponseDto> resultResponse(HttpStatus status, String message, Object result) {
