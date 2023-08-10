@@ -7,6 +7,7 @@ import com.example.trello.entity.Columns;
 import com.example.trello.repository.CardRepository;
 import com.example.trello.repository.ColumnsRepository;
 
+import com.example.trello.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CardService {
     private final CardRepository cardRepository;
-//    private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final ColumnsRepository columnsRepository;
 //    private final WorkerRepository workerRepository;
 

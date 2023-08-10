@@ -1,5 +1,6 @@
 package com.example.trello.controller;
 
+import com.example.trello.dto.ProfileRequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.trello.dto.ApiResponseDto;
 import com.example.trello.dto.SigninRequestDto;
 import com.example.trello.dto.SignupRequestDto;
@@ -19,8 +19,6 @@ import com.example.trello.security.UserDetailsImpl;
 import com.example.trello.service.KakaoService;
 import com.example.trello.service.UserService;
 import com.fasterxml.jackson.core.JacksonException;
-
-import io.jsonwebtoken.Jwt;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
