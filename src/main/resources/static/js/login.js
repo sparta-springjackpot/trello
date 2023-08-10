@@ -30,7 +30,7 @@ const Toast = Swal.mixin({
 function signup() {
     let username = $('#username').val();
     let password = $('#password').val();
-    let passwordConfirmation = $('#password-check').val();
+    let passwordConfirm = $('#passwordConfirm').val();
     let nickname = $('#nickname').val();
 
     if (username == "") {
@@ -53,13 +53,13 @@ function signup() {
         return false;
     }
 
-    if (passwordConfirmation == "") {
+    if (passwordConfirm == "") {
         Swal.fire({
             icon: 'warning',
-            title: '이메일 입력오류',
+            title: '비밀번호 입력오류',
             text: '비밀번호 확인란이 공백입니다. 문자를 입력해주세요.',
         });
-        $('#password-check').focus();
+        $('#passwordConfirm').focus();
         return false;
     }
 
@@ -78,7 +78,7 @@ function signup() {
         url: `/api/user/signup`,
         contentType: "application/json",
         data: JSON.stringify({
-            username: username, password: password, passwordConfirmation: passwordConfirmation,
+            username: username, password: password, passwordConfirm: passwordConfirm,
             nickname: nickname
         }),
     })

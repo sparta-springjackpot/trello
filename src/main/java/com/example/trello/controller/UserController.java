@@ -2,18 +2,26 @@ package com.example.trello.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.trello.dto.ApiResponseDto;
+import com.example.trello.dto.ProfileRequestDto;
 import com.example.trello.dto.SigninRequestDto;
 import com.example.trello.dto.SignupRequestDto;
+import com.example.trello.jwt.JwtUtil;
+import com.example.trello.security.UserDetailsImpl;
+import com.example.trello.service.KakaoService;
 import com.example.trello.service.UserService;
+import com.fasterxml.jackson.core.JacksonException;
 
+import io.jsonwebtoken.Jwt;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -23,11 +31,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
-
-	@GetMapping("/user/login")
-	public String loginPage() {
-		return "login";
-	}
+	private final KakaoService kakaoService;
+	private final JwtUtil jwtUtil;
 
 	@PostMapping("/user/signup")
 	public ResponseEntity<ApiResponseDto> signup(@RequestBody SignupRequestDto signupRequestDto) {
@@ -49,6 +54,15 @@ public class UserController {
 			return ResponseEntity.ok().body(new ApiResponseDto("로그인에 실패했습니다.", HttpStatus.BAD_REQUEST.value()));
 		}
 		return ResponseEntity.ok().body(new ApiResponseDto("로그인에 성공했습니다.", HttpStatus.CREATED.value()));
+	}
+
+	@GetMapping("/user/kakao/callback")
+	// @ResponseBody data 를 리턴해주는 컨트롤러 함수
+	public String kakaoLogin(@RequestParam String code, HttpServletResponse res) throws JacksonException {
+
+		String token = kakaoService.kakaoLogin(code);
+		jwtUtil.addJwtToCookie(token, res);
+		return "redirect:/";
 	}
 
 	@PutMapping("/profile")
