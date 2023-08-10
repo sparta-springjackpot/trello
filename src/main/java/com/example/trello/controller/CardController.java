@@ -1,18 +1,12 @@
 package com.example.trello.controller;
-
 import com.example.trello.dto.ApiResponseDto;
-import com.example.trello.dto.CardListResponseDto;
 import com.example.trello.dto.CardRequestDto;
 import com.example.trello.dto.CardResponseDto;
-import com.example.trello.security.UserDetailslmpl;
 import com.example.trello.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.RejectedExecutionException;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,7 +14,7 @@ import java.util.concurrent.RejectedExecutionException;
 public class CardController {
 
     private final CardService cardService;
-    // 카드 조회 -> Coulmn 에서 List 로 조회
+    // 카드 조회 -> Column 에서 List 로 조회
 
     // 카드 생성
     @PostMapping("/{columnId}/card")
