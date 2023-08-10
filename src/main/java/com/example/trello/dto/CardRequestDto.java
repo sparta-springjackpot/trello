@@ -8,6 +8,6 @@ import lombok.Setter;
 public class CardRequestDto {
     private String cardName;
     private String cardDescription;
-    private String cardColor;
+//    private String cardColor;
     private Long cardNumber;
 }
