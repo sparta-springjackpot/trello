@@ -30,6 +30,7 @@ const Toast = Swal.mixin({
 function signup() {
     let username = $('#username').val();
     let password = $('#password').val();
+    let passwordConfirm = $('#passwordConfirm').val();
     let passwordConfirmation = $('#password-check').val();
     let nickname = $('#nickname').val();
 
@@ -53,6 +54,15 @@ function signup() {
         return false;
     }
 
+
+    if (passwordConfirm == "") {
+        Swal.fire({
+            icon: 'warning',
+            title: '비밀번호 입력오류',
+            text: '비밀번호 확인란이 공백입니다. 문자를 입력해주세요.',
+        });
+        $('#passwordConfirm').focus();
+      
     if (passwordConfirmation == "") {
         Swal.fire({
             icon: 'warning',
@@ -73,16 +83,44 @@ function signup() {
         return false;
     }
 
+    if (password !== passwordConfirm) {
+        Swal.fire({
+            icon: 'warning',
+            title: '비밀번호 확인 불일치',
+            text: '비밀번호가 일치하지 않습니다. 다시 입력해주세요.',
+        });
+        $('#password').val('');
+        $('#passwordConfirm').val('');
+        $('#password').focus();
+        return false;
+    }
+
     $.ajax({
         type: "POST",
         url: `/api/user/signup`,
         contentType: "application/json",
         data: JSON.stringify({
-            username: username, password: password, passwordConfirmation: passwordConfirmation,
+            username: username,
+            password: password,
+            passwordConfirm: passwordConfirm,
             nickname: nickname
         }),
     })
         .done(function (res, status, xhr) {
+            if (res.success) {
+                Toast.fire({
+                    icon: 'success',
+                    title: '회원가입에 성공했습니다.'
+                }).then(function () {
+                    window.location.reload();
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: '회원가입에 실패했습니다.',
+                    text: '이미 존재하는 ID 이거나 nickname 입니다.'
+                });
+            }
             Toast.fire({
                 icon: 'success',
                 title: '회원가입에 성공하셨습니다.'
@@ -94,6 +132,12 @@ function signup() {
             console.log(error);
             Toast.fire({
                 icon: 'error',
+                title: '회원가입에 실패했습니다.'
+            });
+        });
+}
+
+    function onLogin() {
                 title: '회원가입에 실패하였습니다.'
             })
         });

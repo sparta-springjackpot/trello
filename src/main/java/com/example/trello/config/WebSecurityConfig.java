@@ -50,7 +50,8 @@ public class WebSecurityConfig {
 		httpSecurity.authorizeHttpRequests((authorizeHttpRequests) ->
 			authorizeHttpRequests
 				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-				.requestMatchers("/static/**").permitAll()// resources 접근 허용 설정
+				.requestMatchers("/view/**").permitAll()
+				.requestMatchers("/image/**").permitAll()
 				.requestMatchers("/api/user/**").permitAll()
 				.anyRequest().authenticated()
 		);
