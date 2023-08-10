@@ -18,7 +18,6 @@ public class Columns {
     @Column(name = "column_id")
     private Long id;
 
-
-//    @OneToMany(mappedBy = "columns", cascade = CascadeType.REMOVE)
-//    private List<Card> cards;
+  //    @OneToMany(mappedBy = "columns", cascade = CascadeType.REMOVE)
+  //    private List<Card> cards;
 }
