@@ -1,5 +1,8 @@
 package com.example.trello.entity;
 
+
+import com.example.trello.dto.ProfileRequestDto;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +34,10 @@ public class User extends Timestamped {
 
 	@Column
 	private Long kakaoId;
+
+	@Column(nullable = false)
+	@Enumerated(value = EnumType.STRING) //이넘 타입 데이터를 주입 USER -> USER 그대로 저장
+	private UserRoleEnum role;
 
 	public User(String username, String password, String nickname) {
 		this.username = username;

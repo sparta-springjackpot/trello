@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ColumnController {
 
+
     private final ColumnsService columnsService;
 
     // 컬럼 생성 API
@@ -46,3 +47,4 @@ public class ColumnController {
         return ResponseEntity.ok("Move column order succeeded");
     }
 }
+

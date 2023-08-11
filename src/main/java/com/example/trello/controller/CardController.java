@@ -1,8 +1,8 @@
 package com.example.trello.controller;
-
 import com.example.trello.dto.ApiResponseDto;
 import com.example.trello.dto.CardRequestDto;
 import com.example.trello.dto.CardResponseDto;
+import com.example.trello.dto.WorkerRequestDto;
 import com.example.trello.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class CardController {
 
     private final CardService cardService;
-    // 카드 조회 -> Coulmn 에서 List 로 조회
+    // 카드 조회 -> Column 에서 List 로 조회
 
     // 카드 생성
     @PostMapping("/{columnId}/card")
@@ -70,4 +70,43 @@ public class CardController {
 //            return ResponseEntity.ok().body(new ApiResponseDto("카드를 삭제 할 수 있는 권한이 없습니다.",HttpStatus.BAD_REQUEST.value()));
 //        }
 //    }
+    // 카드에 Worker 지정하기 (추가하기)
+    @PostMapping("/card/{cardId}/worker")
+    public ResponseEntity<ApiResponseDto> addWorker(@PathVariable Long cardId, @RequestBody WorkerRequestDto workerRequestDto) {
+        try {
+            cardService.addWorker(cardId, workerRequestDto);
+        } catch (NullPointerException | IllegalArgumentException e) {
+            ApiResponseDto apiResponseDto = new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+            return new ResponseEntity<>(apiResponseDto, HttpStatus.BAD_REQUEST);
+        }
+        ApiResponseDto apiResponseDto = new ApiResponseDto("작업자를 추가했습니다.", HttpStatus.OK.value());
+        return new ResponseEntity<>(
+                apiResponseDto,
+                HttpStatus.OK
+        );
+    }
+
+    // 카드에서 할당한 Worker 삭제
+    @DeleteMapping("/card/{cardId}/worker")
+    public ResponseEntity<ApiResponseDto> deleteWorker(@PathVariable Long cardId, @RequestBody WorkerRequestDto workerRequestDto) {
+        try {
+            cardService.deleteWorker(cardId, workerRequestDto);
+        } catch (NullPointerException | IllegalArgumentException e) {
+            ApiResponseDto apiResponseDto = new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+            return new ResponseEntity<>(apiResponseDto, HttpStatus.BAD_REQUEST);
+        }
+        ApiResponseDto apiResponseDto = new ApiResponseDto("작업자를 삭제했습니다.", HttpStatus.OK.value());
+        return new ResponseEntity<>(
+                apiResponseDto,
+                HttpStatus.OK
+        );
+    }
+
+    // 소속된 컬럼을 다른 컬럼으로 이동 시키기
+    @PutMapping("card/move/{id}/{columnId}")//카드id, 이동컬럼id
+    public ResponseEntity<ApiResponseDto> moveCard(@PathVariable Long id, @PathVariable Long columnId){
+        cardService.moveCard(id, columnId) ;
+        ApiResponseDto apiResponseDto = new ApiResponseDto("카드를 이동했습니다.", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponseDto,HttpStatus.OK);
+    }
 }

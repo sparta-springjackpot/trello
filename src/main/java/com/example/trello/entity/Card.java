@@ -25,8 +25,8 @@ public class Card {
     @JoinColumn(name="column_id")
     private Columns columns;
 
-//    @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE, orphanRemoval = true)
-//    private List<Worker> workers = new ArrayList<>();
+    @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Worker> workers = new ArrayList<>();
 
     // title
     @Column(nullable = false)
@@ -36,8 +36,9 @@ public class Card {
     @Column(nullable = false)
     private String cardDescription;
 
-    @Column
-    private String cardColor;
+
+//    @Column(nullable = false)
+//    private String cardColor;
 
     @Column(nullable = false)
     private Long cardNumber;
@@ -58,8 +59,8 @@ public class Card {
         this.cardDescription = cardRequestDto.getCardDescription();
     }
 
-//    public void moveCard(Columns columns) {
-//        this.columns = columns;
-//    }
+    public void moveCard(Columns columns) {
+        this.columns = columns;
+    }
 
 }
