@@ -60,15 +60,21 @@ public class ReplyService {
 
         Reply reply = new Reply(requestDto, columns, card, user);
         replyRepository.save(reply);
-        return this.resultResponse(HttpStatus.CREATED, " 댓글 작성 완료", new ReplyResponseDto(reply));
+        return this.resultResponse(HttpStatus.CREATED, "댓글 작성 완료", new ReplyResponseDto(reply));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
     @Transactional
-    public ResponseEntity<RestApiResponseDto> updateComment(Long replyId, ReplyRequestDto requestDto, User user) {
+    public ResponseEntity<RestApiResponseDto> updateComment(Long columnId, Long cardId, Long replyId, ReplyRequestDto requestDto, User user) {
         try {
+            cardRepository.findById(cardId).orElseThrow(
+                    () -> new IllegalArgumentException("해당 카드가 존재하지않습니다."));
+
+            columnsRepository.findById(columnId).orElseThrow(
+                    () -> new IllegalArgumentException("해당 컬럼이 존재하지않습니다."));
+
             // 댓글이 있는지
             Reply reply = replyRepository.findById(replyId).orElseThrow(() ->
                     new IllegalArgumentException("해당 댓글이 없습니다."));
@@ -88,8 +94,15 @@ public class ReplyService {
         }
     }
 
-    public ResponseEntity<RestApiResponseDto> deleteComment(Long replyId, User user) {
+    public ResponseEntity<RestApiResponseDto> deleteComment(Long columnId, Long cardId, Long replyId, User user) {
         try {
+
+            cardRepository.findById(cardId).orElseThrow(
+                    () -> new IllegalArgumentException("해당 카드가 존재하지않습니다."));
+
+            columnsRepository.findById(columnId).orElseThrow(
+                    () -> new IllegalArgumentException("해당 컬럼이 존재하지않습니다."));
+
             // 댓글이 있는지
             Reply reply = replyRepository.findById(replyId).orElseThrow(() ->
                     new IllegalArgumentException("해당 댓글이 없습니다."));

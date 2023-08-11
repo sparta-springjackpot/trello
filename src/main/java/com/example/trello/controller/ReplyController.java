@@ -37,24 +37,28 @@ public class ReplyController {
     }
 
     // 댓글 수정
-    @PutMapping("/replys/{replyid}")
+    @PutMapping("/columns/{columnid}/cards/{cardid}/replys/{replyid}")
     public ResponseEntity<RestApiResponseDto> updateComment(
+            @PathVariable Long columnid,
+            @PathVariable Long cardid,
             @PathVariable Long replyid,
             @RequestBody ReplyRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         this.tokenValidate(userDetails);
-        return replyService.updateComment(replyid, requestDto, userDetails.getUser());
+        return replyService.updateComment(columnid, cardid, replyid, requestDto, userDetails.getUser());
     }
 
     // 댓글 삭제
-    @DeleteMapping("/replys/{replyid}")
+    @DeleteMapping("/columns/{columnid}/cards/{cardid}/replys/{replyid}")
     public ResponseEntity<RestApiResponseDto> deleteComment(
+            @PathVariable Long columnid,
+            @PathVariable Long cardid,
             @PathVariable Long replyid,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         this.tokenValidate(userDetails);
-        return replyService.deleteComment(replyid, userDetails.getUser());
+        return replyService.deleteComment(columnid, cardid, replyid, userDetails.getUser());
     }
 
     public void tokenValidate(UserDetailsImpl userDetails) {
