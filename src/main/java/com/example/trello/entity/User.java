@@ -1,5 +1,6 @@
 package com.example.trello.entity;
 
+
 import com.example.trello.dto.ProfileRequestDto;
 
 import jakarta.persistence.*;
@@ -12,7 +13,6 @@ import lombok.Setter;
 @Setter
 @Entity
 public class User extends Timestamped {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import com.example.trello.jwt.JwtAuthorizationFilter;
 import com.example.trello.jwt.JwtUtil;
 import com.example.trello.security.UserDetailsServiceImpl;
@@ -22,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig {
+
 	private final JwtUtil jwtUtil;
 	private final UserDetailsServiceImpl userDetailsService;
 
@@ -62,4 +62,3 @@ public class WebSecurityConfig {
 		return httpSecurity.build();
 	}
 }
-

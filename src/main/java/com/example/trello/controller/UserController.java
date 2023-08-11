@@ -9,6 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.trello.dto.ApiResponseDto;
+import com.example.trello.dto.ProfileRequestDto;
+import com.example.trello.dto.SigninRequestDto;
+import com.example.trello.dto.SignupRequestDto;
+import com.example.trello.security.UserDetailsImpl;
+import com.example.trello.service.UserService;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.trello.dto.ApiResponseDto;
@@ -27,14 +35,10 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class UserController {
 
+
 	private final UserService userService;
 	private final KakaoService kakaoService;
 	private final JwtUtil jwtUtil;
-
-	@GetMapping("/user/login")
-	public String loginPage() {
-		return "login";
-	}
 
 	@PostMapping("/user/signup")
 	public ResponseEntity<ApiResponseDto> signup(@RequestBody SignupRequestDto signupRequestDto) {
