@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Table(name = "permission")
 @NoArgsConstructor
+@Setter
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
