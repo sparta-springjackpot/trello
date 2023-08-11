@@ -44,7 +44,7 @@ public class ReplyService {
                     .toList();
             return this.resultResponse(HttpStatus.OK, "댓글 조회", replyResponseDtoList);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -62,7 +62,7 @@ public class ReplyService {
         replyRepository.save(reply);
         return this.resultResponse(HttpStatus.CREATED, " 댓글 작성 완료", new ReplyResponseDto(reply));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -84,7 +84,7 @@ public class ReplyService {
             reply.update(requestDto);
             return this.resultResponse(HttpStatus.OK, "댓글 수정 완료", new ReplyResponseDto(reply));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -106,7 +106,7 @@ public class ReplyService {
             replyRepository.delete(reply);
             return this.resultResponse(HttpStatus.OK, "댓글 삭제 완료", new ReplyResponseDto(reply));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 

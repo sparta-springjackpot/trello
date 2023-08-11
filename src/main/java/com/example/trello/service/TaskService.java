@@ -36,7 +36,7 @@ public class TaskService {
 
             return this.resultResponse(HttpStatus.OK, "설정한 날짜 조회", responseDto);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -59,7 +59,7 @@ public class TaskService {
 
             return this.resultResponse(HttpStatus.CREATED, " 날짜 설정 완료", new TaskResponseDto(task));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -75,7 +75,7 @@ public class TaskService {
 
             return this.resultResponse(HttpStatus.CREATED, " 날짜 수정 완료", new TaskResponseDto(task));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -88,7 +88,7 @@ public class TaskService {
 
             return this.resultResponse(HttpStatus.CREATED, " 날짜 초기화 완료", null);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
