@@ -10,12 +10,12 @@ public class CardResponseDto extends ApiResponseDto{
     private String cardName;
     private String cardDescription;
 //    private String cardColor;
-//    private Long columnId;
+    private Long columnId;
 
     public CardResponseDto(Card card) {
         this.cardName = card.getCardName();
         this.cardDescription = card.getCardDescription();
-//        this.columnId = card.getColumns().getId();
+        this.columnId = card.getColumns().getId();
     }
 
 
