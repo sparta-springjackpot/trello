@@ -31,8 +31,6 @@ public class ReplyController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ){
         this.tokenValidate(userDetails);
-
-//        return replyService.createComment(cardId, requestDto, userDetails.getUser());
         return replyService.createComment(columnid, cardid, requestDto, userDetails.getUser());
     }
 

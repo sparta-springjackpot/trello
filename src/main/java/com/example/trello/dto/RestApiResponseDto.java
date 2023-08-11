@@ -8,17 +8,17 @@ import lombok.Setter;
 public class RestApiResponseDto {
 
     private int status;
-    private String success;
+    private String msg;
     private Object result;
 
-    public RestApiResponseDto(int status, String success, Object result) {
+    public RestApiResponseDto(int status, String msg, Object result) {
         this.status = status;
-        this.success = success;
+        this.msg = msg;
         this.result = result;
     }
 
-    public RestApiResponseDto(int status, String success) {
+    public RestApiResponseDto(int status, String msg) {
         this.status = status;
-        this.success = success;
+        this.msg = msg;
     }
 }

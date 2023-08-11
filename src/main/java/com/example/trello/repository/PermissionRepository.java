@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PermissionRepository extends JpaRepository<com.example.trello.entity.Permission, Long> {
+public interface PermissionRepository extends JpaRepository<Permission, Long> {
 //    boolean existsByBoardIdAndUserId(Long boardId, Long userId);
 //
 //    List<Permission> findAllByBoardId(Long boardId);
