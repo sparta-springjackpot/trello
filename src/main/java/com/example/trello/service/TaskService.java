@@ -11,6 +11,7 @@ import com.example.trello.repository.ColumnsRepository;
 import com.example.trello.repository.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,15 +35,7 @@ public class TaskService {
 
     public ResponseEntity<RestApiResponseDto> getTask(Long columnId, Long cardId) {
         try {
-            Columns columns = columnsRepository.findById(columnId)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 컬럼이 존재하지 않습니다."));
-
-            Card card = cardRepository.findById(cardId).orElseThrow(
-                    () -> new IllegalArgumentException("해당 카드가 존재하지않습니다."));
-
-            if (!card.getColumns().getId().equals(columnId) || !card.getColumns().getId().equals(columns.getId())) {
-                throw new IllegalArgumentException("해당 카드는 지정된 컬럼에 속해 있지 않습니다.");
-            }
+            validateCardAndColumnExistence(columnId, cardId);
 
             Task task = taskRepository.findByCardId(cardId).orElseThrow(
                     () -> new IllegalArgumentException("해당 카드에 설정된 날짜가 없습니다."));
@@ -57,15 +50,10 @@ public class TaskService {
 
     public ResponseEntity<RestApiResponseDto> createCardDates(Long columnId, Long cardId, TaskRequestDto requestDto) {
         try {
-            Columns columns = columnsRepository.findById(columnId)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 컬럼이 존재하지 않습니다."));
+            Pair<Columns, Card> pair = validateCardAndColumnExistence(columnId, cardId);
 
-            Card card = cardRepository.findById(cardId).orElseThrow(
-                    () -> new IllegalArgumentException("해당 카드가 존재하지않습니다."));
-
-            if (!card.getColumns().getId().equals(columnId) || !card.getColumns().getId().equals(columns.getId())) {
-                throw new IllegalArgumentException("해당 카드는 지정된 컬럼에 속해 있지 않습니다.");
-            }
+            Columns columns = pair.getFirst();
+            Card card = pair.getSecond();
 
             Optional<Task> chackColumnTask = taskRepository.findByCardId(columnId);
 
@@ -90,15 +78,7 @@ public class TaskService {
 
     public ResponseEntity<RestApiResponseDto> updateCardDates(Long columnId, Long cardId, Long dateId, TaskRequestDto requestDto) {
         try {
-            Columns columns = columnsRepository.findById(columnId)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 컬럼이 존재하지 않습니다."));
-
-            Card card = cardRepository.findById(cardId).orElseThrow(
-                    () -> new IllegalArgumentException("해당 카드가 존재하지않습니다."));
-
-            if (!card.getColumns().getId().equals(columnId) || !card.getColumns().getId().equals(columns.getId())) {
-                throw new IllegalArgumentException("해당 카드는 지정된 컬럼에 속해 있지 않습니다.");
-            }
+            validateCardAndColumnExistence(columnId, cardId);
 
             Task task = taskRepository.findById(dateId).orElseThrow(
                     () -> new IllegalArgumentException("설정한 날짜가 존재하지 않습니다."));
@@ -116,15 +96,7 @@ public class TaskService {
 
     public ResponseEntity<RestApiResponseDto> deleteCardDates(Long columnId, Long cardId, Long dateId) {
         try {
-            Columns columns = columnsRepository.findById(columnId)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 컬럼이 존재하지 않습니다."));
-
-            Card card = cardRepository.findById(cardId).orElseThrow(
-                    () -> new IllegalArgumentException("해당 카드가 존재하지않습니다."));
-
-            if (!card.getColumns().getId().equals(columnId) || !card.getColumns().getId().equals(columns.getId())) {
-                throw new IllegalArgumentException("해당 카드는 지정된 컬럼에 속해 있지 않습니다.");
-            }
+            validateCardAndColumnExistence(columnId, cardId);
 
             Task task = taskRepository.findById(dateId).orElseThrow(
                     () -> new IllegalArgumentException("설정한 날짜가 존재하지 않습니다."));
@@ -146,6 +118,20 @@ public class TaskService {
             task.setExpired(true);
             taskRepository.save(task);
         }
+    }
+
+    private Pair<Columns, Card> validateCardAndColumnExistence(Long columnId, Long cardId) {
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 카드가 존재하지 않습니다."));
+
+        Columns column = columnsRepository.findById(columnId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 컬럼이 존재하지 않습니다."));
+
+        if (!card.getColumns().getId().equals(columnId) || !card.getColumns().getId().equals(column.getId())) {
+            throw new IllegalArgumentException("해당 카드는 지정된 컬럼에 속해 있지 않습니다.");
+        }
+
+        return Pair.of(column, card);
     }
 
     private ResponseEntity<RestApiResponseDto> resultResponse(HttpStatus status, String message, Object result) {
