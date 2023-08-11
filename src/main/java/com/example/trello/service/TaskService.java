@@ -103,7 +103,7 @@ public class TaskService {
 
             taskRepository.delete(task);
 
-            return this.resultResponse(HttpStatus.OK, "날짜 초기화 완료", null);
+            return this.resultResponse(HttpStatus.OK, "날짜 초기화 완료", new TaskResponseDto(task));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
