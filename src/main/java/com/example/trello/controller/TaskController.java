@@ -15,24 +15,24 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @GetMapping("/cards/{cardId}/dates")
-    public ResponseEntity<RestApiResponseDto> getTask(@PathVariable Long cardId){
-        return taskService.getTask(cardId);
+    @GetMapping("/columns/{columnid}/cards/{cardid}/dates")
+    public ResponseEntity<RestApiResponseDto> getTask(@PathVariable Long columnid, @PathVariable Long cardid){
+        return taskService.getTask(columnid, cardid);
     }
 
     @Transactional
-    @PostMapping("/cards/{cardId}/dates")
-    public ResponseEntity<RestApiResponseDto> createCardDates(@PathVariable Long cardId, @RequestBody TaskRequestDto requestDto){
-        return taskService.createCardDates(cardId, requestDto);
+    @PostMapping("/columns/{columnid}/cards/{cardid}/dates")
+    public ResponseEntity<RestApiResponseDto> createCardDates(@PathVariable Long columnid, @PathVariable Long cardid, @RequestBody TaskRequestDto requestDto){
+        return taskService.createCardDates(columnid, cardid, requestDto);
     }
 
-    @PutMapping("/cards/dates/{dateId}")
-    public ResponseEntity<RestApiResponseDto> updateCardDates(@PathVariable Long dateId, @RequestBody TaskRequestDto requestDto) {
-        return taskService.updateCardDates(dateId, requestDto);
+    @PutMapping("/columns/{columnid}/cards/{cardid}/dates/{dateid}")
+    public ResponseEntity<RestApiResponseDto> updateCardDates(@PathVariable Long columnid, @PathVariable Long cardid, @PathVariable Long dateid, @RequestBody TaskRequestDto requestDto) {
+        return taskService.updateCardDates(columnid, cardid, dateid, requestDto);
     }
 
-    @DeleteMapping("/cards/dates/{dateId}")
-    public ResponseEntity<RestApiResponseDto> deleteCardDates(@PathVariable Long dateId) {
-        return taskService.deleteCardDates(dateId);
+    @DeleteMapping("/columns/{columnid}/cards/{cardid}/dates/{dateid}")
+    public ResponseEntity<RestApiResponseDto> deleteCardDates(@PathVariable Long columnid, @PathVariable Long cardid, @PathVariable Long dateid) {
+        return taskService.deleteCardDates(columnid, cardid, dateid);
     }
 }

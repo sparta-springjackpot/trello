@@ -4,11 +4,14 @@ import com.example.trello.dto.RestApiResponseDto;
 import com.example.trello.dto.TaskRequestDto;
 import com.example.trello.dto.TaskResponseDto;
 import com.example.trello.entity.Card;
+import com.example.trello.entity.Columns;
 import com.example.trello.entity.Task;
 import com.example.trello.repository.CardRepository;
+import com.example.trello.repository.ColumnsRepository;
 import com.example.trello.repository.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,8 +30,13 @@ public class TaskService {
     @Autowired
     private CardRepository cardRepository;
 
-    public ResponseEntity<RestApiResponseDto> getTask(Long cardId) {
+    @Autowired
+    private ColumnsRepository columnsRepository;
+
+    public ResponseEntity<RestApiResponseDto> getTask(Long columnId, Long cardId) {
         try {
+            validateCardAndColumnExistence(columnId, cardId);
+
             Task task = taskRepository.findByCardId(cardId).orElseThrow(
                     () -> new IllegalArgumentException("해당 카드에 설정된 날짜가 없습니다."));
 
@@ -36,35 +44,42 @@ public class TaskService {
 
             return this.resultResponse(HttpStatus.OK, "설정한 날짜 조회", responseDto);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
-    public ResponseEntity<RestApiResponseDto> createCardDates(Long cardId, TaskRequestDto requestDto) {
+    public ResponseEntity<RestApiResponseDto> createCardDates(Long columnId, Long cardId, TaskRequestDto requestDto) {
         try {
-            Card card = cardRepository.findById(cardId).orElseThrow(
-                    () -> new IllegalArgumentException("해당 카드가 존재하지않습니다."));
+            Pair<Columns, Card> pair = validateCardAndColumnExistence(columnId, cardId);
 
-            Task task = new Task(requestDto, card);
+            Columns columns = pair.getFirst();
+            Card card = pair.getSecond();
 
-            Optional<Task> chackTask = taskRepository.findByCardId(cardId);
+            Optional<Task> chackColumnTask = taskRepository.findByCardId(columnId);
 
-            if (chackTask.isPresent()) {
+            Optional<Task> chackCardTask = taskRepository.findByCardId(cardId);
+
+            if (chackColumnTask.isPresent() && chackCardTask.isPresent()) {
                 log.info("중복 테스트");
-                throw new IllegalArgumentException("해당 카드에 이미 설정된 날짜가 있습니다.");
+                throw new IllegalArgumentException("해당 컬럼안 카드에 이미 설정된 날짜가 있습니다.");
             }
+
+            Task task = new Task(requestDto, card, columns);
+
             task.setStartDate(LocalDateTime.now());
 
             taskRepository.save(task);
 
-            return this.resultResponse(HttpStatus.CREATED, " 날짜 설정 완료", new TaskResponseDto(task));
+            return this.resultResponse(HttpStatus.CREATED, "날짜 설정 완료", new TaskResponseDto(task));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
-    public ResponseEntity<RestApiResponseDto> updateCardDates(Long dateId, TaskRequestDto requestDto) {
+    public ResponseEntity<RestApiResponseDto> updateCardDates(Long columnId, Long cardId, Long dateId, TaskRequestDto requestDto) {
         try {
+            validateCardAndColumnExistence(columnId, cardId);
+
             Task task = taskRepository.findById(dateId).orElseThrow(
                     () -> new IllegalArgumentException("설정한 날짜가 존재하지 않습니다."));
 
@@ -73,22 +88,24 @@ public class TaskService {
 
             task = taskRepository.save(task);
 
-            return this.resultResponse(HttpStatus.CREATED, " 날짜 수정 완료", new TaskResponseDto(task));
+            return this.resultResponse(HttpStatus.OK, "날짜 수정 완료", new TaskResponseDto(task));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
-    public ResponseEntity<RestApiResponseDto> deleteCardDates(Long dateId) {
+    public ResponseEntity<RestApiResponseDto> deleteCardDates(Long columnId, Long cardId, Long dateId) {
         try {
+            validateCardAndColumnExistence(columnId, cardId);
+
             Task task = taskRepository.findById(dateId).orElseThrow(
                     () -> new IllegalArgumentException("설정한 날짜가 존재하지 않습니다."));
 
             taskRepository.delete(task);
 
-            return this.resultResponse(HttpStatus.CREATED, " 날짜 초기화 완료", null);
+            return this.resultResponse(HttpStatus.OK, "날짜 초기화 완료", null);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.ok().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+            return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -101,6 +118,20 @@ public class TaskService {
             task.setExpired(true);
             taskRepository.save(task);
         }
+    }
+
+    private Pair<Columns, Card> validateCardAndColumnExistence(Long columnId, Long cardId) {
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 카드가 존재하지 않습니다."));
+
+        Columns column = columnsRepository.findById(columnId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 컬럼이 존재하지 않습니다."));
+
+        if (!card.getColumns().getId().equals(columnId) || !card.getColumns().getId().equals(column.getId())) {
+            throw new IllegalArgumentException("해당 카드는 지정된 컬럼에 속해 있지 않습니다.");
+        }
+
+        return Pair.of(column, card);
     }
 
     private ResponseEntity<RestApiResponseDto> resultResponse(HttpStatus status, String message, Object result) {

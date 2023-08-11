@@ -42,11 +42,6 @@ public class UserController {
 	private final KakaoService kakaoService;
 	private final JwtUtil jwtUtil;
 
-	@GetMapping("/user/login")
-	public String loginPage() {
-		return "login";
-	}
-
 	@PostMapping("/user/signup")
 	public ResponseEntity<ApiResponseDto> signup(@RequestBody SignupRequestDto signupRequestDto) {
 		try {
@@ -103,4 +98,3 @@ public class UserController {
 	}
 
 }
->>>>>>> develop

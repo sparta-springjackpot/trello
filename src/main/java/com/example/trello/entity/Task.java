@@ -27,9 +27,14 @@ public class Task {
     @JoinColumn(name = "card_id")
     private Card card;
 
-    public Task(TaskRequestDto requestDto, Card card) {
+    @ManyToOne
+    @JoinColumn(name = "column_id")
+    private Columns columns;
+
+    public Task(TaskRequestDto requestDto, Card card, Columns columns) {
         this.title = requestDto.getTitle();
         this.endDate = requestDto.getEndDate();
         this.card = card;
+        this.columns = columns;
     }
 }
