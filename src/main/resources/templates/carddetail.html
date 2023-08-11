@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    테스트 모달
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: flex-start; margin-bottom: 10px;">
+                    <div class="col-md-8">.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid consectetur distinctio,
+                        ducimus eum maiores natus nemo neque quibusdam, quos sed suscipit ut velit voluptatem.
+                        Blanditiis dignissimos doloremque fugiat quos suscipit.</div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; flex-direction: column; align-items: flex-end;">
+                    <p style="margin-bottom: 5px; display: flex;">설정할 시간을 선택하세요.</p>
+                    <input type="datetime-local" class="datetime" style="height: 30px; font-size: 15px; display: block;">
+                    <button type="button" class="btn btn-primary" >설정</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <textarea placeholder="코멘트를 입력하세요." class="form-control" id="message-text"></textarea>
+                <button type="button" class="btn btn-primary">전송</button>
+            </div>
+            <div class="grid1_of_2">
+                <div class="grid_text" style="border-top: 1px black solid">
+                    <h4 class="style1 list"><a href="#">ㅅㄷㄴㅅ</a></h4>
+                    <h3 class="style">ㅅㄷㄴㅅ</h3>
+                    <p class="para top"> ㅅㄷㄴㅅ</p>
+                    <a id="testid" class="btn1" onclick="updateComment()">수정</a>
+                    <a class="btn1" onclick="deleteComment()">삭제</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

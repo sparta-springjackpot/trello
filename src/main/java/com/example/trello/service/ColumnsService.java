@@ -20,7 +20,7 @@ public class ColumnsService {
         Columns column = new Columns();
         column.setColumnName(requestDto.getColumnName());
         column.setColumnNumber(requestDto.getColumnNumber());
-        return columnsRepository.save(column).getColumnId();
+        return columnsRepository.save(column).getId();
     }
 
     // 컬럼 수정 로직
@@ -33,7 +33,7 @@ public class ColumnsService {
 
         Columns savedColumn = columnsRepository.save(column);
         ColumnResponseDto responseDto = new ColumnResponseDto();
-        responseDto.setColumnId(savedColumn.getColumnId());
+        responseDto.setColumn_id(savedColumn.getId());
         responseDto.setColumnName(savedColumn.getColumnName());
         responseDto.setColumnNumber(savedColumn.getColumnNumber());
 

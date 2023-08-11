@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.trello.entity.User;
 
 public class UserDetailsImpl implements UserDetails {
+
 	private final User user;
 
 	public UserDetailsImpl(User user) {

@@ -29,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 public class JwtUtil {
+
 	// 토큰 생성에 필요한 값
 	// Header Authorization KEY 값
 	public static final String AUTHORIZATION_HEADER = "Authorization";

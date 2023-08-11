@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UserService {
 
+
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtUtil jwtUtil;

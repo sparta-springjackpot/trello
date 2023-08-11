@@ -54,7 +54,6 @@ function signup() {
         return false;
     }
 
-
     if (passwordConfirm == "") {
         Swal.fire({
             icon: 'warning',
