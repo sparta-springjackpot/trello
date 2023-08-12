@@ -130,7 +130,7 @@ public class TaskService {
 
             // task로 받아온 DB를 삭제함
             taskRepository.delete(task);
-
+          
             //성공하면 http 상태코드 200, 메세지, responsedto 객체를 json으로 반환.
             return this.resultResponse(HttpStatus.OK, "날짜 초기화 완료", new TaskResponseDto(task));
         } catch (IllegalArgumentException e) {
