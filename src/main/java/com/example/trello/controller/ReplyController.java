@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ReplyController {
     private final ReplyService replyService;
 
+    //댯굴 가져오기
     @GetMapping("/columns/{columnid}/cards/{cardid}/replys")
     @ResponseBody
     public ResponseEntity<RestApiResponseDto> getComment(@PathVariable Long columnid,
@@ -59,6 +60,7 @@ public class ReplyController {
         return replyService.deleteComment(columnid, cardid, replyid, userDetails.getUser());
     }
 
+    // JWT 토큰 검증 메서드 분리
     public void tokenValidate(UserDetailsImpl userDetails) {
         try{
             userDetails.getUser();
