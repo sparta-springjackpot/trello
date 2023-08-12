@@ -132,7 +132,7 @@ public class TaskService {
             taskRepository.delete(task);
 
             //성공하면 http 상태코드 200, 메세지, responsedto 객체를 json으로 반환.
-            return this.resultResponse(HttpStatus.OK, "날짜 초기화 완료", null);
+            return this.resultResponse(HttpStatus.OK, "날짜 초기화 완료", new TaskResponseDto(task));
         } catch (IllegalArgumentException e) {
             // 이벤트가 발생하면 http 상태코드 400, 실패원인을 반환
             return ResponseEntity.badRequest().body(new RestApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
