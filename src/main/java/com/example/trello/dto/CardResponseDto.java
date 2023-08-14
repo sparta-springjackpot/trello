@@ -18,5 +18,4 @@ public class CardResponseDto extends ApiResponseDto{
         this.columnId = card.getColumns().getId();
     }
 
-
 }
