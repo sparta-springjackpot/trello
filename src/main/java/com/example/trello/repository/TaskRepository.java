@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByExpiredFalseAndEndDateBefore(LocalDateTime currentDate);
     Optional<Task> findByCardId(Long cardId);
+    Optional<Task> findByColumnId(Long columnId);
 }
