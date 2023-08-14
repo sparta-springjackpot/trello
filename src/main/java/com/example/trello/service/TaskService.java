@@ -65,7 +65,7 @@ public class TaskService {
             Card card = pair.getSecond();
 
             //columns 중복을 위한 변수
-            Optional<Task> chackColumnTask = taskRepository.findByCardId(columnId);
+            Optional<Task> chackColumnTask = taskRepository.findByColumnId(columnId);
 
             //card 중복을 위한 변수
             Optional<Task> chackCardTask = taskRepository.findByCardId(cardId);
